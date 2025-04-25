@@ -1,18 +1,23 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home/home';
-import Login from './pages/Login/Login';
-import Register from './pages/Register/Register';
+import Usuarios from "./components/Usuarios";
+import EditarUsuario from "./components/EditarUsuario";
 
 function App() {
   return (
     <Router>
+      {/* Barra de navegación */}
+      
+
+      {/* Rutas */}
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<Usuarios />} />
+        <Route path="/editar/:id" element={<EditarUsuario />} />
+        {/* Ruta temporal sin id */}
+        <Route path="/editar" element={<EditarUsuario />} />
+        {/*<Route path="/crear" element={<CrearUsuario />} />*/}
       </Routes>
     </Router>
   );
 }
 
-export default App;
+export default App

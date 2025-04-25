@@ -1,0 +1,93 @@
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
+/* Contenedor principal centrado */
+.usuarios-container {
+  display: flex;
+  justify-content: center;  
+  align-items: center;      
+  height: 100vh;            
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+
+/* Estilo para el contenido de los usuarios */
+.usuarios-contenido {
+  background-color: white;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 30px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;   
+}
+
+/* Estilo del botón para crear un nuevo usuario */
+.crear-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 20%;
+}
+
+.crear-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Estilo de la lista de usuarios */
+.usuarios-lista {
+  margin-top: 20px;
+}
+
+/* Estilo para cada tarjeta de usuario */
+.usuario-card {
+  border: 1px solid #ccc;
+  padding: 12px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+}
+
+/* Estilo para los botones de editar y eliminar */
+.editar-btn,
+.eliminar-btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.editar-btn {
+  background-color: #28a745;
+  color: white;
+  margin-right: 8px;
+}
+
+.editar-btn:hover {
+  background-color: #218838;
+}
+
+.eliminar-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.eliminar-btn:hover {
+  background-color: #c82333;
+}
