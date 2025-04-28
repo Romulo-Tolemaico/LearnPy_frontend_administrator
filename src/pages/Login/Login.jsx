@@ -1,14 +1,15 @@
-import { useState, useContext } from 'react';
+// src/components/Login.jsx
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
-import { AuthContext } from '../../context/AuthContext'; // Importar el contexto de autenticación
+import { AuthContext } from '../../context/AuthContext'; // Importa el contexto de autenticación
 
 function Login() {
   const [formData, setFormData] = useState({ email: '', password: '', type: 3 });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false); 
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext); 
+  const { login } = useContext(AuthContext); // Obtener el método login del contexto
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,12 +36,11 @@ function Login() {
 
       if (response.ok) {
         const data = await response.json();
-        login(data.role);
+        login(data.token); // Usamos el token para login
         navigate('/listUsers');
       } else {
         setError('El correo o contraseña no son válidos. Por favor intente nuevamente');
       }
-    // eslint-disable-next-line no-unused-vars
     } catch (error) {
       setError('No se pudo conectar al servidor. Revise su conexión e intente más tarde');
     } finally {

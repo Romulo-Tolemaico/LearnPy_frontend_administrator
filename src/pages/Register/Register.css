@@ -87,3 +87,32 @@ input:focus {
   align-items: center;
   gap: 0.5rem;
 }
+.form-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.submit-button {
+  padding: 10px 20px;
+  background-color: #4caf50; /* Verde */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancel-button {
+  padding: 10px 20px;
+  background-color: #f44336; /* Rojo */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancel-button:disabled,
+.submit-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
