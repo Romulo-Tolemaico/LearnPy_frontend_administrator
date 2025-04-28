@@ -1,6 +1,5 @@
-/* Login.css y Register.css (pueden compartir estilos) */
-.login-container,
-.register-container {
+/* Estilos comunes */
+.container {
   max-width: 400px;
   margin: 2rem auto;
   padding: 2rem;
@@ -70,14 +69,16 @@ input:focus {
   text-decoration: underline;
 }
 
-.back-link {
-  display: block;
+.links-container {
   text-align: center;
   margin-top: 1rem;
+}
+
+.links-container a {
   color: #3498db;
   text-decoration: none;
 }
 
-.back-link:hover {
+.links-container a:hover {
   text-decoration: underline;
 }

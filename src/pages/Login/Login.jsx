@@ -1,25 +1,51 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import { AuthContext } from '../../context/AuthContext'; // Importar el contexto de autenticación
 
 function Login() {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+  const [formData, setFormData] = useState({ email: '', password: '', type: 3 });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false); 
+  const navigate = useNavigate();
+  const { login } = useContext(AuthContext); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Datos enviados (simulado):', formData);
-    // Aquí irá la conexión al backend luego
+
+    if (!formData.email || !formData.password) {
+      setError('Por favor complete todos los campos');
+      return;
+    }
+
+    setLoading(true); // Activar cargando
+
+    try {
+      const response = await fetch('http://localhost:5000/user/login_user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+        credentials: 'same-origin',
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        login(data.role);
+        navigate('/listUsers');
+      } else {
+        setError('El correo o contraseña no son válidos. Por favor intente nuevamente');
+      }
+    // eslint-disable-next-line no-unused-vars
+    } catch (error) {
+      setError('No se pudo conectar al servidor. Revise su conexión e intente más tarde');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -35,6 +61,7 @@ function Login() {
             value={formData.email}
             onChange={handleChange}
             required
+            disabled={loading} // Bloquear input si está cargando
           />
         </div>
 
@@ -47,20 +74,16 @@ function Login() {
             value={formData.password}
             onChange={handleChange}
             required
+            disabled={loading} // Bloquear input si está cargando
           />
         </div>
 
-        <button type="submit" className="submit-button">
-          Ingresar
+        {error && <p className="error-message" style={{ color: 'red', marginTop: '10px' }}>{error}</p>}
+
+        <button type="submit" className="submit-button" disabled={loading}>
+          {loading ? 'Cargando...' : 'Ingresar'}
         </button>
       </form>
-
-      <p className="redirect-text">
-        ¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link>
-      </p>
-      <Link to="/" className="back-link">
-        ← Volver al inicio
-      </Link>
     </div>
   );
 }
