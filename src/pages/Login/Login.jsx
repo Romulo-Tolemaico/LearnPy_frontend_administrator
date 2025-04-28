@@ -2,14 +2,14 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
-import { AuthContext } from '../../context/AuthContext'; // Importa el contexto de autenticación
+import { AuthContext } from '../../context/AuthContext'; 
 
 function Login() {
   const [formData, setFormData] = useState({ email: '', password: '', type: 3 });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false); 
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext); // Obtener el método login del contexto
+  const { login } = useContext(AuthContext); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,7 +24,7 @@ function Login() {
       return;
     }
 
-    setLoading(true); // Activar cargando
+    setLoading(true); 
 
     try {
       const response = await fetch('http://localhost:5000/user/login_user', {
@@ -36,11 +36,12 @@ function Login() {
 
       if (response.ok) {
         const data = await response.json();
-        login(data.token); // Usamos el token para login
+        login(data.token); 
         navigate('/listUsers');
       } else {
         setError('El correo o contraseña no son válidos. Por favor intente nuevamente');
       }
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
       setError('No se pudo conectar al servidor. Revise su conexión e intente más tarde');
     } finally {
@@ -61,7 +62,7 @@ function Login() {
             value={formData.email}
             onChange={handleChange}
             required
-            disabled={loading} // Bloquear input si está cargando
+            disabled={loading} 
           />
         </div>
 
@@ -74,7 +75,7 @@ function Login() {
             value={formData.password}
             onChange={handleChange}
             required
-            disabled={loading} // Bloquear input si está cargando
+            disabled={loading} 
           />
         </div>
 
