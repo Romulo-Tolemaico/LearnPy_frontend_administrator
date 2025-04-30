@@ -3,11 +3,13 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import { AuthContext } from '../../context/AuthContext'; 
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 function Login() {
   const [formData, setFormData] = useState({ email: '', password: '', type: 3 });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { login } = useContext(AuthContext); 
 
@@ -68,15 +70,24 @@ function Login() {
 
         <div className="form-group">
           <label htmlFor="password">Contraseña</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            disabled={loading} 
-          />
+          <div style={{ position: 'relative' }}>
+            <input
+              type={showPassword ? 'text' : 'password'}
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              disabled={loading} 
+            />
+            <button
+              type="button"
+              className="password-toggle-btn"
+              onClick={() => setShowPassword(prev => !prev)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
         </div>
 
         {error && <p className="error-message" style={{ color: 'red', marginTop: '10px' }}>{error}</p>}

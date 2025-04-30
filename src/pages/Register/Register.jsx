@@ -1,7 +1,10 @@
+// src/pages/Register/Register.jsx
+
 import { useState } from 'react'; 
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate para la redirección sin recargar
+import { useNavigate } from 'react-router-dom'; 
 import './Register.css';
 import Header from '../../components/Header/Header'; 
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -12,9 +15,11 @@ function Register() {
     type: 1,
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate();  // Usamos useNavigate para la redirección
+  const navigate = useNavigate();
 
   const handleChange = ({ target: { name, value } }) => {
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -95,7 +100,7 @@ function Register() {
       }
 
       alert('¡Registro exitoso!');
-      navigate('/listUsers');  // Cambié window.location.href por navigate
+      navigate('/listUsers');
     } catch {
       setErrors({ general: 'Error de conexión. Por favor intenta más tarde.' });
     } finally {
@@ -109,25 +114,46 @@ function Register() {
       <div className="register-container">
         <h1>Registrarse</h1>
         <form onSubmit={handleSubmit}>
-          {['name', 'email', 'password', 'confirmPassword'].map((field, idx) => (
-            <div className="form-group" key={idx}>
-              <label htmlFor={field}>
-                {field === 'name' && 'Nombre Completo'}
-                {field === 'email' && 'Correo Electrónico'}
-                {field === 'password' && 'Contraseña'}
-                {field === 'confirmPassword' && 'Confirmar Contraseña'}
-              </label>
-              <input
-                type={field === 'password' || field === 'confirmPassword' ? 'password' : field === 'email' ? 'email' : 'text'}
-                id={field}
-                name={field}
-                value={formData[field]}
-                onChange={handleChange}
-                required
-              />
-              {errors[field] && <p className="input-error">{errors[field]}</p>}
-            </div>
-          ))}
+          {['name', 'email', 'password', 'confirmPassword'].map((field, idx) => {
+            const isPassword = field === 'password';
+            const isConfirm = field === 'confirmPassword';
+            const show = isPassword ? showPassword : isConfirm ? showConfirmPassword : false;
+            const toggleShow = isPassword
+              ? () => setShowPassword(prev => !prev)
+              : () => setShowConfirmPassword(prev => !prev);
+
+            return (
+              <div className="form-group" key={idx}>
+                <label htmlFor={field}>
+                  {field === 'name' && 'Nombre Completo'}
+                  {field === 'email' && 'Correo Electrónico'}
+                  {isPassword && 'Contraseña'}
+                  {isConfirm && 'Confirmar Contraseña'}
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    type={(isPassword || isConfirm) ? (show ? 'text' : 'password') : field === 'email' ? 'email' : 'text'}
+                    id={field}
+                    name={field}
+                    value={formData[field]}
+                    onChange={handleChange}
+                    required
+                  />
+                  {(isPassword || isConfirm) && (
+                    <button
+                      type="button"
+                      onClick={toggleShow}
+                      className="password-toggle-btn"
+                    >
+                      {show ? <FaEyeSlash /> : <FaEye />}
+                    </button>
+                  )}
+                </div>
+                {errors[field] && <p className="input-error">{errors[field]}</p>}
+              </div>
+            );
+          })}
+
           <div className="form-group">
             <label>Tipo de usuario:</label>
             <div className="radio-options">
@@ -145,7 +171,9 @@ function Register() {
               ))}
             </div>
           </div>
+
           {errors.general && <p className="general-error">{errors.general}</p>}
+
           <div className="form-buttons">
             <button type="submit" className="submit-button" disabled={loading}>
               {loading ? 'Guardando' : 'Guardar'}
