@@ -1,0 +1,274 @@
+/* Estilos de la lista de usuarios */
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+  
+  #root {
+    height: 100%;
+  }
+  
+  /* Contenedor principal centrado */
+  .usuarios-container {
+    display: flex;
+    justify-content: center;  
+    align-items: center;      
+    height: 100vh;            
+    background-color: #f4f4f4;
+    padding: 20px;
+  }
+  
+  /* Estilo para el contenido de los usuarios */
+  .usuarios-contenido {
+    background-color: white;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 30px;
+    width: 100%;
+    max-width: 900px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;   
+  }
+  
+  /* Estilo del botón para crear un nuevo usuario */
+  .crear-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 20%;
+  }
+  
+  .crear-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Estilo de la lista de usuarios */
+  .usuarios-lista {
+    margin-top: 20px;
+  }
+  
+  /* Estilo para cada tarjeta de usuario */
+  .usuario-card {
+    border: 1px solid #ccc;
+    padding: 12px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+  }
+  
+  /* Estilo para los botones de editar y eliminar */
+  .editar-btn,
+  .eliminar-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .editar-btn {
+    background-color: #28a745;
+    color: white;
+    margin-right: 8px;
+  }
+  
+  .editar-btn:hover {
+    background-color: #218838;
+  }
+  
+  .eliminar-btn {
+    background-color: #888883;
+    color: white;
+  }
+  
+  .eliminar-btn:hover {
+    background-color: #363026;
+  }
+  /*avatar*/
+  .usuario-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+  .usuario-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  .usuario-card > div {
+    flex-grow: 1;
+  }
+  /*estilos de icono eliminar*/
+  .icono-papelera {
+    width: 16px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  /*estilos icono de cada usuario*/
+  .icono-btn {
+    width: 14px;
+    height: 14px;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+  /*cabezera lista usuarios*/
+  
+  
+  .cabecera-usuarios {
+    display: grid;
+    grid-template-columns: 1fr 2fr 3fr 2fr;
+    font-weight: bold;
+    padding: 10px;
+    border-bottom: 2px solid #ccc;
+    background-color: #f4f4f4;
+    margin-top: 20px;
+  }
+  
+  .cabecera-usuarios,
+  .usuario-card {
+    display: grid;
+    grid-template-columns: 30px 50px 50px 150px 1fr 200px;
+    align-items: center;
+    gap: 10px;
+  }
+  /*titulo*/
+  .titulo-usuarios {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 20px 0;
+    color: #333;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 10px;
+  }
+  /*check*/
+  .checkbox-cabecera {
+    margin-left: 4px;
+    margin-right: 10px;
+    transform: scale(1.2);
+  }
+  /*botones arriba*/
+  .acciones-superiores {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-bottom: 0.5rem;
+  }
+  /*ajustar tamaño botones*/
+  .btn-crear-superior,
+  .btn-eliminar-superior {
+    min-width: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .btn-crear-superior {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .btn-crear-superior:hover {
+    background-color: #45a049;
+  }
+  
+  .btn-eliminar-superior {
+    background-color: #1a1602;
+    color: white;
+  }
+  
+  .btn-eliminar-superior:hover:not(:disabled) {
+    background-color: #696766;
+  }
+  
+  .btn-eliminar-superior:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  /*mensaje confirmacion*/
+  .mensaje-exito {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px 16px;
+    border: 1px solid #c3e6cb;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    text-align: center;
+    font-weight: bold;
+    transition: opacity 0.3s ease;
+  }
+  /*menu lateral*/
+  
+  
+  .usuarios-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .usuarios-contenido {
+    flex: 1;
+    padding: 20px;
+  }
+  /*css de cambio*/
+  /* Flex layout entre menú lateral y contenido */
+  .contenido-flex {
+    display: flex;
+  }
+  
+  /* Menú lateral interno */
+  .menu-lateral {
+    width: 180px;
+    background-color: #f5f5f5;
+    border-right: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .menu-lateral ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .menu-lateral li {
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .menu-lateral li:hover {
+    background-color: #e0e0e0;
+  }
+  
+  /* Contenido principal de usuarios */
+  .contenido-principal {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  
+  
+  
