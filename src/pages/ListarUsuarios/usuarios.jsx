@@ -1,22 +1,20 @@
 "use client"
 
-import { useState } from "react"
-import "./usuarios.css"
+import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import "./Usuarios.css"
+
+// URL base de la API
+const API_URL = "http://localhost:5000/user"
 
 const Usuarios = () => {
-  // Estado para controlar el tipo de usuario seleccionado (docentes o estudiantes)
-  const [tipoUsuario, setTipoUsuario] = useState("docentes")
+  const navigate = useNavigate()
+
+  // Estado para controlar el tipo de usuario seleccionado (1=Admin, 2=Estudiante, 3=Docente)
+  const [tipoUsuario, setTipoUsuario] = useState(3) // Por defecto mostramos docentes (3)
 
   // Estado para almacenar los usuarios
-  const [usuarios, setUsuarios] = useState([
-    { id: 1, nombre: "Juan Carlos", email: "Email1@gmail.com", contraseña: "11111111", tipo: "docentes" },
-    { id: 2, nombre: "Juan Carlos", email: "Email1@gmail.com", contraseña: "11111111", tipo: "docentes" },
-    { id: 3, nombre: "Juan Carlos", email: "Email1@gmail.com", contraseña: "11111111", tipo: "docentes" },
-    { id: 4, nombre: "Juan Carlos", email: "Email1@gmail.com", contraseña: "11111111", tipo: "docentes" },
-    { id: 5, nombre: "Juan Carlos", email: "Email1@gmail.com", contraseña: "11111111", tipo: "docentes" },
-    { id: 6, nombre: "María López", email: "maria@gmail.com", contraseña: "22222222", tipo: "estudiantes" },
-    { id: 7, nombre: "Pedro Gómez", email: "pedro@gmail.com", contraseña: "33333333", tipo: "estudiantes" },
-  ])
+  const [usuarios, setUsuarios] = useState([])
 
   // Estado para rastrear los usuarios seleccionados
   const [seleccionados, setSeleccionados] = useState([])
@@ -25,15 +23,72 @@ const Usuarios = () => {
   const [modalEliminar, setModalEliminar] = useState(false)
   const [usuarioEliminar, setUsuarioEliminar] = useState(null)
 
-  // Estado para el modal de edición
-  const [modalEditar, setModalEditar] = useState(false)
-  const [usuarioEditar, setUsuarioEditar] = useState({
-    id: null,
-    nombre: "",
-    email: "",
-    contraseña: "",
-    tipo: "",
-  })
+  // Estados para manejar la carga y errores
+  const [cargando, setCargando] = useState(false)
+  const [error, setError] = useState(null)
+
+  // Modificar la función tipoTexto para reflejar los nuevos valores
+  const tipoTexto = (tipo) => {
+    switch (tipo) {
+      case 3:
+        return "Administrador"
+      case 1:
+        return "Estudiante"
+      case 2:
+        return "Docente"
+      default:
+        return "Desconocido"
+    }
+  }
+
+  // Modificar la función tipoNumerico para reflejar los nuevos valores
+  const tipoNumerico = (tipo) => {
+    switch (tipo) {
+      case "administradores":
+        return 3
+      case "estudiantes":
+        return 1
+      case "docentes":
+        return 2
+      default:
+        return 2 // Por defecto mostramos docentes
+    }
+  }
+
+  // Función para cargar usuarios desde la API
+  const cargarUsuarios = async () => {
+    setCargando(true)
+    setError(null)
+
+    try {
+      const response = await fetch(`${API_URL}/get_users`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ type: tipoUsuario }),
+      })
+
+      if (!response.ok) {
+        throw new Error(`Error al cargar usuarios: ${response.status}`)
+      }
+
+      const data = await response.json()
+      setUsuarios(data)
+      // Limpiar seleccionados al cambiar de tipo
+      setSeleccionados([])
+    } catch (err) {
+      setError(err.message)
+      console.error("Error al cargar usuarios:", err)
+    } finally {
+      setCargando(false)
+    }
+  }
+
+  // Cargar usuarios cuando cambia el tipo seleccionado
+  useEffect(() => {
+    cargarUsuarios()
+  }, [tipoUsuario])
 
   // Función para abrir el modal de eliminación
   const abrirModalEliminar = (usuario) => {
@@ -42,83 +97,94 @@ const Usuarios = () => {
   }
 
   // Función para confirmar la eliminación
-  const confirmarEliminar = () => {
-    if (seleccionados.length > 0) {
-      confirmarEliminarSeleccionados()
-    } else {
-      setUsuarios(usuarios.filter((usuario) => usuario.id !== usuarioEliminar.id))
+  const confirmarEliminar = async () => {
+    setCargando(true)
+    setError(null)
+
+    try {
+      if (seleccionados.length > 0) {
+        // Eliminar múltiples usuarios
+        const response = await fetch(`${API_URL}/delete_users`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ codes: seleccionados }),
+        })
+
+        if (!response.ok) {
+          throw new Error(`Error al eliminar usuarios: ${response.status}`)
+        }
+
+        // Actualizar la lista de usuarios
+        cargarUsuarios()
+        setSeleccionados([])
+      } else {
+        // Eliminar un solo usuario
+        const response = await fetch(`${API_URL}/delete_user`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ code: usuarioEliminar.code }),
+        })
+
+        if (!response.ok) {
+          throw new Error(`Error al eliminar usuario: ${response.status}`)
+        }
+
+        // Actualizar la lista de usuarios
+        cargarUsuarios()
+      }
+
       setModalEliminar(false)
+    } catch (err) {
+      setError(err.message)
+      console.error("Error al eliminar:", err)
+    } finally {
+      setCargando(false)
     }
   }
 
-  // Función para abrir el modal de edición
-  const abrirModalEditar = (usuario) => {
-    setUsuarioEditar({ ...usuario })
-    setModalEditar(true)
+  // Función para ir a la página de edición
+  const irAEditar = (usuario) => {
+    navigate(`/editar/${usuario.code}`)
   }
 
-  // Función para guardar los cambios de edición
-  const guardarCambios = () => {
-    setUsuarios(usuarios.map((usuario) => (usuario.id === usuarioEditar.id ? usuarioEditar : usuario)))
-    setModalEditar(false)
-  }
-
-  // Función para manejar cambios en los inputs del formulario de edición
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setUsuarioEditar({
-      ...usuarioEditar,
-      [name]: value,
-    })
-  }
-
-  // Función para añadir un nuevo usuario
+  // Función para ir a la página de creación
   const añadirUsuario = () => {
-    const nuevoUsuario = {
-      id: usuarios.length + 1,
-      nombre: "Nuevo Usuario",
-      email: "nuevo@gmail.com",
-      contraseña: "12345678",
-      tipo: tipoUsuario,
-    }
-
-    setUsuarioEditar(nuevoUsuario)
-    setModalEditar(true)
+    navigate("/editar")
   }
 
   // Función para manejar la selección de usuarios
-  const handleSeleccion = (id) => {
-    if (seleccionados.includes(id)) {
-      setSeleccionados(seleccionados.filter((itemId) => itemId !== id))
+  const handleSeleccion = (code) => {
+    if (seleccionados.includes(code)) {
+      setSeleccionados(seleccionados.filter((itemId) => itemId !== code))
     } else {
-      setSeleccionados([...seleccionados, id])
+      setSeleccionados([...seleccionados, code])
     }
   }
 
   // Función para seleccionar/deseleccionar todos
   const seleccionarTodos = () => {
-    if (seleccionados.length === usuariosFiltrados.length) {
+    if (seleccionados.length === usuarios.length) {
       setSeleccionados([])
     } else {
-      setSeleccionados(usuariosFiltrados.map((usuario) => usuario.id))
+      setSeleccionados(usuarios.map((usuario) => usuario.code))
     }
   }
 
   // Función para eliminar los usuarios seleccionados
   const eliminarSeleccionados = () => {
     setModalEliminar(true)
-    setUsuarioEliminar({ nombre: `${seleccionados.length} usuarios` })
+    setUsuarioEliminar({ name: `${seleccionados.length} usuarios` })
   }
 
-  // Función para confirmar la eliminación de seleccionados
-  const confirmarEliminarSeleccionados = () => {
-    setUsuarios(usuarios.filter((usuario) => !seleccionados.includes(usuario.id)))
-    setSeleccionados([])
-    setModalEliminar(false)
+  // Función para cambiar el tipo de usuario mostrado
+  const cambiarTipoUsuario = (tipo) => {
+    const tipoNum = tipoNumerico(tipo)
+    setTipoUsuario(tipoNum)
   }
-
-  // Filtrar usuarios según el tipo seleccionado
-  const usuariosFiltrados = usuarios.filter((usuario) => usuario.tipo === tipoUsuario)
 
   return (
     <div className="admin-container">
@@ -128,82 +194,87 @@ const Usuarios = () => {
 
       <div className="admin-content">
         <aside className="admin-sidebar">
-          <div
-            className={`sidebar-item ${tipoUsuario === "usuarios" ? "active" : ""}`}
-            onClick={() => setTipoUsuario("usuarios")}
-          >
-            <i className="user-icon"></i> Usuarios
+          <div className={`sidebar-item ${tipoUsuario === 3 ? "active" : ""}`} onClick={() => setTipoUsuario(3)}>
+            <i className="user-icon"></i> Administradores
           </div>
-          <div
-            className={`sidebar-item ${tipoUsuario === "docentes" ? "active" : ""}`}
-            onClick={() => setTipoUsuario("docentes")}
-          >
+          <div className={`sidebar-item ${tipoUsuario === 2 ? "active" : ""}`} onClick={() => setTipoUsuario(2)}>
             Docentes
           </div>
-          <div
-            className={`sidebar-item ${tipoUsuario === "estudiantes" ? "active" : ""}`}
-            onClick={() => setTipoUsuario("estudiantes")}
-          >
+          <div className={`sidebar-item ${tipoUsuario === 1 ? "active" : ""}`} onClick={() => setTipoUsuario(1)}>
             Estudiantes
           </div>
           <div className="sidebar-item">Lecciones</div>
         </aside>
 
         <main className="admin-main">
+          {error && <div className="error-message">Error: {error}</div>}
+
           <div className="table-actions">
             <button
               className="btn-eliminar-seleccionados"
               onClick={eliminarSeleccionados}
-              disabled={seleccionados.length === 0}
+              disabled={seleccionados.length === 0 || cargando}
             >
               Eliminar Seleccionados <i className="delete-icon">🗑</i>
             </button>
-            <button className="btn-añadir" onClick={añadirUsuario}>
+            <button className="btn-añadir" onClick={añadirUsuario} disabled={cargando}>
               Añadir <i className="add-icon">+</i>
             </button>
           </div>
 
-          <table className="usuarios-table">
-            <thead>
-              <tr>
-                <th>
-                  <input
-                    type="checkbox"
-                    checked={seleccionados.length === usuariosFiltrados.length && usuariosFiltrados.length > 0}
-                    onChange={seleccionarTodos}
-                  />
-                </th>
-                <th>Nombre de Usuario</th>
-                <th>Email</th>
-                <th>Contraseña</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {usuariosFiltrados.map((usuario) => (
-                <tr key={usuario.id}>
-                  <td>
+          {cargando ? (
+            <div className="loading">Cargando usuarios...</div>
+          ) : (
+            <table className="usuarios-table">
+              <thead>
+                <tr>
+                  <th>
                     <input
                       type="checkbox"
-                      checked={seleccionados.includes(usuario.id)}
-                      onChange={() => handleSeleccion(usuario.id)}
+                      checked={seleccionados.length === usuarios.length && usuarios.length > 0}
+                      onChange={seleccionarTodos}
                     />
-                  </td>
-                  <td>{usuario.nombre}</td>
-                  <td>{usuario.email}</td>
-                  <td>{usuario.contraseña}</td>
-                  <td className="acciones">
-                    <button className="btn-editar" onClick={() => abrirModalEditar(usuario)}>
-                      <i className="edit-icon">✎</i>
-                    </button>
-                    <button className="btn-eliminar" onClick={() => abrirModalEliminar(usuario)}>
-                      <i className="delete-icon">🗑</i>
-                    </button>
-                  </td>
+                  </th>
+                  <th>Nombre de Usuario</th>
+                  <th>Email</th>
+                  <th>Tipo</th>
+                  <th>Acciones</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {usuarios.length > 0 ? (
+                  usuarios.map((usuario) => (
+                    <tr key={usuario.code}>
+                      <td>
+                        <input
+                          type="checkbox"
+                          checked={seleccionados.includes(usuario.code)}
+                          onChange={() => handleSeleccion(usuario.code)}
+                        />
+                      </td>
+                      <td>{usuario.name}</td>
+                      <td>{usuario.email}</td>
+                      <td>{tipoTexto(usuario.type)}</td>
+                      <td className="acciones">
+                        <button className="btn-editar" onClick={() => irAEditar(usuario)}>
+                          <i className="edit-icon">✎</i>
+                        </button>
+                        <button className="btn-eliminar" onClick={() => abrirModalEliminar(usuario)}>
+                          <i className="delete-icon">🗑</i>
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="5" className="no-data">
+                      No hay usuarios para mostrar
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
         </main>
       </div>
 
@@ -215,54 +286,16 @@ const Usuarios = () => {
             <p>
               {seleccionados.length > 0
                 ? `¿Está seguro que desea eliminar ${seleccionados.length} usuarios seleccionados?`
-                : `¿Está seguro que desea eliminar al usuario ${usuarioEliminar.nombre}?`}
+                : `¿Está seguro que desea eliminar al usuario ${usuarioEliminar.name}?`}
             </p>
             <div className="modal-actions">
-              <button className="btn-cancelar" onClick={() => setModalEliminar(false)}>
+              <button className="btn-cancelar" onClick={() => setModalEliminar(false)} disabled={cargando}>
                 Cancelar
               </button>
-              <button className="btn-confirmar" onClick={confirmarEliminar}>
-                Eliminar
+              <button className="btn-confirmar" onClick={confirmarEliminar} disabled={cargando}>
+                {cargando ? "Eliminando..." : "Eliminar"}
               </button>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* Modal para editar usuario */}
-      {modalEditar && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>{usuarioEditar.id ? "Editar Usuario" : "Añadir Usuario"}</h2>
-            <form className="form-editar">
-              <div className="form-group">
-                <label>Nombre de Usuario:</label>
-                <input type="text" name="nombre" value={usuarioEditar.nombre} onChange={handleChange} />
-              </div>
-              <div className="form-group">
-                <label>Email:</label>
-                <input type="email" name="email" value={usuarioEditar.email} onChange={handleChange} />
-              </div>
-              <div className="form-group">
-                <label>Contraseña:</label>
-                <input type="password" name="contraseña" value={usuarioEditar.contraseña} onChange={handleChange} />
-              </div>
-              <div className="form-group">
-                <label>Tipo:</label>
-                <select name="tipo" value={usuarioEditar.tipo} onChange={handleChange}>
-                  <option value="docentes">Docente</option>
-                  <option value="estudiantes">Estudiante</option>
-                </select>
-              </div>
-              <div className="modal-actions">
-                <button type="button" className="btn-cancelar" onClick={() => setModalEditar(false)}>
-                  Cancelar
-                </button>
-                <button type="button" className="btn-confirmar" onClick={guardarCambios}>
-                  Guardar
-                </button>
-              </div>
-            </form>
           </div>
         </div>
       )}
