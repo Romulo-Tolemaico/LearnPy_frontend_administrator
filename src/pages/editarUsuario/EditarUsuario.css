@@ -1,185 +1,212 @@
 /* Estilos generales */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-  }
-  
-  .admin-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-  
-  /* Estilos del encabezado */
-  .admin-header {
-    background: linear-gradient(to right, #2e8b57, #3cb371, #90ee90);
-    color: white;
-    padding: 15px 20px;
-    text-align: left;
-  }
-  
-  .admin-header h1 {
-    font-size: 1.5rem;
-  }
-  
-  /* Estilos del contenido principal */
-  .admin-content {
-    display: flex;
-    flex: 1;
-  }
-  
-  /* Estilos de la barra lateral */
-  .admin-sidebar {
-    width: 200px;
-    background-color: #8fbc8f;
-    padding: 20px 0;
-  }
-  
-  .sidebar-item {
-    padding: 12px 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    transition: background-color 0.3s;
-  }
-  
-  .sidebar-item:hover,
-  .sidebar-item.active {
-    background-color: rgba(0, 0, 0, 0.1);
-  }
-  
-  .user-icon {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    margin-right: 8px;
-    background-color: #333;
-    border-radius: 50%;
-  }
-  
-  /* Estilos del contenido principal */
-  .admin-main {
-    flex: 1;
-    padding: 20px;
-    background-color: #f5f5f5;
-  }
-  
-  /* Estilos para los modales */
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  .modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    width: 400px;
-    max-width: 90%;
-  }
-  
-  .modal-content h2 {
-    margin-bottom: 15px;
-    font-size: 1.3rem;
-  }
-  
-  .modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
-  }
-  
-  .btn-cancelar,
-  .btn-confirmar {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .btn-cancelar {
-    background-color: #f2f2f2;
-  }
-  
-  .btn-confirmar {
-    background-color: #4caf50;
-    color: white;
-  }
-  
-  /* Estilos para el formulario de edición */
-  .form-container {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  }
-  
-  .form-container h2 {
-    margin-bottom: 20px;
-    font-size: 1.5rem;
-  }
-  
-  .form-editar {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-  
-  .form-group label {
-    font-weight: bold;
-  }
-  
-  .form-group input,
-  .form-group select {
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-  
-  .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
-  }
-  
-  /* Estilos para estados de carga y error */
-  .loading {
-    padding: 20px;
-    text-align: center;
-    font-style: italic;
-    color: #666;
-  }
-  
-  .error-message {
-    background-color: #ffebee;
-    color: #c62828;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 15px;
-    border-left: 4px solid #c62828;
-  }
-  
-  /* Estilos para botones deshabilitados */
-  button:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-  
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.admin-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Estilos del encabezado */
+.admin-header {
+  background: linear-gradient(to right, #2e8b57, #3cb371, #90ee90);
+  color: white;
+  padding: 15px 20px;
+  text-align: left;
+}
+
+.admin-header h1 {
+  font-size: 1.5rem;
+}
+
+/* Estilos del contenido principal */
+.admin-content {
+  display: flex;
+  flex: 1;
+}
+
+/* Estilos de la barra lateral */
+.admin-sidebar {
+  width: 200px;
+  background-color: #8fbc8f;
+  padding: 20px 0;
+}
+
+.sidebar-item {
+  padding: 12px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s;
+}
+
+.sidebar-item:hover,
+.sidebar-item.active {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.user-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  background-color: #333;
+  border-radius: 50%;
+}
+
+/* Estilos del contenido principal */
+.admin-main {
+  flex: 1;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+/* Estilos para los modales */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 400px;
+  max-width: 90%;
+}
+
+.modal-content h2 {
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-cancelar,
+.btn-confirmar {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-cancelar {
+  background-color: #f2f2f2;
+}
+
+.btn-confirmar {
+  background-color: #4caf50;
+  color: white;
+}
+
+/* Estilos para el formulario de edición */
+.form-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.form-editar {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-group label {
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Estilos para estados de carga y error */
+.loading {
+  padding: 20px;
+  text-align: center;
+  font-style: italic;
+  color: #666;
+}
+
+.error-message {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  border-left: 4px solid #c62828;
+}
+
+/* Estilos para botones deshabilitados */
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Estilos para validación de formularios */
+.input-error {
+  border: 1px solid #c62828 !important;
+  background-color: #ffebee;
+}
+
+.error-text {
+  color: #c62828;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+.password-requirements {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 4px;
+  font-style: italic;
+}
+
+/* Estilos para el modal de éxito */
+.modal-success {
+  border-top: 4px solid #4caf50;
+}
+
+.modal-success h2 {
+  color: #4caf50;
+}

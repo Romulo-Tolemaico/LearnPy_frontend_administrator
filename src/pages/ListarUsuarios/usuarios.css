@@ -28,35 +28,86 @@
 .admin-content {
   display: flex;
   flex: 1;
+  position: relative;
 }
 
-/* Estilos de la barra lateral */
+/* Mejorar el estilo del sidebar para que sea más elegante */
 .admin-sidebar {
-  width: 200px;
-  background-color: #8fbc8f;
-  padding: 20px 0;
+  width: 220px;
+  background: linear-gradient(to bottom, #2e8b57, #3cb371);
+  padding: 25px 0;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para el sidebar colapsado */
+.admin-sidebar.collapsed {
+  width: 0;
+  padding: 0;
 }
 
 .sidebar-item {
-  padding: 12px 20px;
+  padding: 14px 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.9);
+  border-left: 4px solid transparent;
+  margin-bottom: 5px;
 }
 
 .sidebar-item:hover,
 .sidebar-item.active {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.1);
+  border-left: 4px solid #fff;
+  color: #fff;
 }
 
 .user-icon {
   display: inline-block;
-  width: 16px;
-  height: 16px;
-  margin-right: 8px;
-  background-color: #333;
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
   border-radius: 50%;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-icon.docente {
+  background-color:#cccccc;
+}
+
+.user-icon.estudiante {
+  background-color: #eeecea;
+}
+
+.user-icon.leccion {
+  background-color: #9c27b0;
+}
+
+/* Mejorar el botón de toggle sidebar */
+.toggle-sidebar {
+  position: absolute;
+  left: 0;
+  top: 10px;
+  z-index: 10;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.toggle-sidebar:hover {
+  background-color: #3e8e41;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
 }
 
 /* Estilos del contenido principal */
@@ -64,6 +115,18 @@
   flex: 1;
   padding: 20px;
   background-color: #f5f5f5;
+  transition: all 0.3s ease;
+  margin-left: 0; /* Valor base */
+}
+
+/* Ajustar el admin-main cuando el sidebar está visible */
+.admin-sidebar:not(.collapsed) + .admin-main {
+  margin-left: 0;
+}
+
+/* Estilo para cuando el contenido principal está expandido (sidebar colapsado) */
+.admin-main.expanded {
+  margin-left: 0;
 }
 
 /* Estilos de la tabla */
@@ -83,6 +146,11 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  transition: background-color 0.3s;
+}
+
+.btn-añadir:hover {
+  background-color: #3e8e41;
 }
 
 .add-icon {
@@ -94,6 +162,8 @@
   border-collapse: collapse;
   background-color: white;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
 }
 
 .usuarios-table th,
@@ -117,19 +187,26 @@
   gap: 10px;
 }
 
-.btn-editar,
+/* Mejorar el estilo del botón eliminar */
 .btn-eliminar {
   background: none;
   border: none;
   cursor: pointer;
   font-size: 1.1rem;
+  padding: 5px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  color: #f44336;
 }
 
-.btn-editar {
-  color: #2196f3;
+.btn-eliminar:hover {
+  background-color: rgba(244, 67, 54, 0.1);
 }
 
-.btn-eliminar {
+.edit-icon,
+.delete-icon {
+  font-size: 20px;
+  display: inline-block;
   color: #f44336;
 }
 
@@ -153,11 +230,13 @@
   border-radius: 5px;
   width: 400px;
   max-width: 90%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .modal-content h2 {
   margin-bottom: 15px;
   font-size: 1.3rem;
+  color: #333;
 }
 
 .modal-actions {
@@ -173,15 +252,24 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .btn-cancelar {
   background-color: #f2f2f2;
 }
 
+.btn-cancelar:hover {
+  background-color: #e0e0e0;
+}
+
 .btn-confirmar {
   background-color: #4caf50;
   color: white;
+}
+
+.btn-confirmar:hover {
+  background-color: #3e8e41;
 }
 
 /* Estilos para el formulario de edición */
@@ -238,6 +326,11 @@
   display: flex;
   align-items: center;
   margin-right: 10px;
+  transition: background-color 0.3s;
+}
+
+.btn-eliminar-seleccionados:hover {
+  background-color: #d32f2f;
 }
 
 .btn-eliminar-seleccionados:disabled {

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import "./Usuarios.css"
+import "./usuarios.css"
 
 // URL base de la API
 const API_URL = "http://localhost:5000/user"
@@ -10,8 +10,8 @@ const API_URL = "http://localhost:5000/user"
 const Usuarios = () => {
   const navigate = useNavigate()
 
-  // Estado para controlar el tipo de usuario seleccionado (1=Admin, 2=Estudiante, 3=Docente)
-  const [tipoUsuario, setTipoUsuario] = useState(3) // Por defecto mostramos docentes (3)
+  // Estado para controlar el tipo de usuario seleccionado (1=Estudiante, 2=Docente)
+  const [tipoUsuario, setTipoUsuario] = useState(2) // Por defecto mostramos docentes (2)
 
   // Estado para almacenar los usuarios
   const [usuarios, setUsuarios] = useState([])
@@ -27,6 +27,9 @@ const Usuarios = () => {
   const [cargando, setCargando] = useState(false)
   const [error, setError] = useState(null)
 
+  // Estado para controlar la visibilidad del sidebar
+  const [sidebarVisible, setSidebarVisible] = useState(true)
+
   // Modificar la función tipoTexto para reflejar los nuevos valores
   const tipoTexto = (tipo) => {
     switch (tipo) {
@@ -38,20 +41,6 @@ const Usuarios = () => {
         return "Docente"
       default:
         return "Desconocido"
-    }
-  }
-
-  // Modificar la función tipoNumerico para reflejar los nuevos valores
-  const tipoNumerico = (tipo) => {
-    switch (tipo) {
-      case "administradores":
-        return 3
-      case "estudiantes":
-        return 1
-      case "docentes":
-        return 2
-      default:
-        return 2 // Por defecto mostramos docentes
     }
   }
 
@@ -180,10 +169,9 @@ const Usuarios = () => {
     setUsuarioEliminar({ name: `${seleccionados.length} usuarios` })
   }
 
-  // Función para cambiar el tipo de usuario mostrado
-  const cambiarTipoUsuario = (tipo) => {
-    const tipoNum = tipoNumerico(tipo)
-    setTipoUsuario(tipoNum)
+  // Función para alternar la visibilidad del sidebar
+  const toggleSidebar = () => {
+    setSidebarVisible(!sidebarVisible)
   }
 
   return (
@@ -193,20 +181,23 @@ const Usuarios = () => {
       </header>
 
       <div className="admin-content">
-        <aside className="admin-sidebar">
-          <div className={`sidebar-item ${tipoUsuario === 3 ? "active" : ""}`} onClick={() => setTipoUsuario(3)}>
-            <i className="user-icon"></i> Administradores
-          </div>
+        <button className="toggle-sidebar" onClick={toggleSidebar}>
+          {sidebarVisible ? "◀" : "▶"}
+        </button>
+
+        <aside className={`admin-sidebar ${sidebarVisible ? "" : "collapsed"}`}>
           <div className={`sidebar-item ${tipoUsuario === 2 ? "active" : ""}`} onClick={() => setTipoUsuario(2)}>
-            Docentes
+            <i className="user-icon docente"></i> Docentes
           </div>
           <div className={`sidebar-item ${tipoUsuario === 1 ? "active" : ""}`} onClick={() => setTipoUsuario(1)}>
-            Estudiantes
+            <i className="user-icon estudiante"></i> Estudiantes
           </div>
-          <div className="sidebar-item">Lecciones</div>
+          <div className="sidebar-item">
+            <i className="user-icon leccion"></i> Lecciones
+          </div>
         </aside>
 
-        <main className="admin-main">
+        <main className={`admin-main ${sidebarVisible ? "" : "expanded"}`}>
           {error && <div className="error-message">Error: {error}</div>}
 
           <div className="table-actions">
@@ -256,11 +247,17 @@ const Usuarios = () => {
                       <td>{usuario.email}</td>
                       <td>{tipoTexto(usuario.type)}</td>
                       <td className="acciones">
-                        <button className="btn-editar" onClick={() => irAEditar(usuario)}>
-                          <i className="edit-icon">✎</i>
+                        <button className="btn-editar" onClick={() => irAEditar(usuario)} title="Editar usuario">
+                          <i className="edit-icon">✏️</i>
                         </button>
-                        <button className="btn-eliminar" onClick={() => abrirModalEliminar(usuario)}>
-                          <i className="delete-icon">🗑</i>
+                        <button
+                          className="btn-eliminar"
+                          onClick={() => abrirModalEliminar(usuario)}
+                          title="Eliminar usuario"
+                        >
+                          <i className="delete-icon" style={{ color: "red" }}>
+                            🗑️
+                          </i>
                         </button>
                       </td>
                     </tr>
