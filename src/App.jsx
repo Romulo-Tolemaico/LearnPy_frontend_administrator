@@ -6,7 +6,8 @@ import PrivateRoute from './components/PrivateRoute';
 import Home from './pages/Home/Home'; 
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register'; 
-import UsersList from './pages/UsersList/UsersList';
+import Usuarios from './pages/ListarUsuarios/usuarios';
+import EditUser from './pages/EditUser/EditUser';
 
 function App() {
   return (
@@ -21,7 +22,12 @@ function App() {
           />
           <Route
             path="/listUsers"
-            element={<PrivateRoute element={<UsersList />} />} 
+            element={<PrivateRoute element={<Usuarios />} />} 
+          />
+         
+          <Route
+            path="/editar/:id"
+            element={<PrivateRoute element={<EditUser />} />} 
           />
         </Routes>
       </Router>

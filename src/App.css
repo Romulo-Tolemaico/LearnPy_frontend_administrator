@@ -1,10 +1,21 @@
+/* Asegúrate de que html y body ocupen toda la pantalla */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+/* El root ahora ocupará toda la pantalla */
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
+  height: 100%;
+  width: 100%;
   padding: 2rem;
+  box-sizing: border-box;
   text-align: center;
 }
 
+/* Otros estilos no necesitan cambio */
 .logo {
   height: 6em;
   padding: 1.5em;

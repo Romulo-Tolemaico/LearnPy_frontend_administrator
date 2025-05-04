@@ -1,19 +1,18 @@
-import { useContext } from 'react'; // Importar useContext
-import { AuthContext } from '../../context/AuthContext'; // Importar el AuthContext
-import './Header.css';  // Asegúrate de que la ruta es correcta
+import { useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
+import './Header.css';
 
 function Header({ titulo }) {
-  const { logout } = useContext(AuthContext); // Obtener la función de logout desde el contexto
+  const { logout } = useContext(AuthContext);
 
   const handleLogout = () => {
-    logout(); // Llama a la función de logout
-    // Redirigir a la página de login (si es necesario)
-    window.location.href = '/login'; // O usa `navigate` si usas react-router
+    logout();
+    window.location.href = '/login'; // O usa navigate si usas react-router
   };
 
   return (
-    <header>
-      <h1>{titulo}</h1>
+    <header className="header">
+      <h1 className="header-title">{titulo}</h1>
       <button onClick={handleLogout} className="logout-button">
         Cerrar sesión
       </button>

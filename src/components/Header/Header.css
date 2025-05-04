@@ -1,12 +1,32 @@
-header {
-  background-color: #4F46E5; 
+.header {
+  background-color: #4F46E5;
   padding: 1rem;
   text-align: center;
+  width: 100%; 
+  box-sizing: border-box;
+  position: relative;
 }
 
-h1 {
+
+.header-title {
   color: white;
   margin: 0;
   font-size: 2rem;
   font-family: 'Arial', sans-serif;
+}
+
+.logout-button {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #e3342f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #cc1f1a;
 }
