@@ -15,6 +15,10 @@ function UsersList() {
     navigate('/register');
   };
 
+  const handleLogout = () => {
+    navigate('/logout'); // Ajusta esto según tu ruta real
+  };
+
   return (
     <div className="page-container">
       <Header titulo="LearnPy Administrator - Lista de usuarios" />
@@ -32,6 +36,12 @@ function UsersList() {
             className={role === "Docente" ? "selected-button" : "button"}
           >
             Docente
+          </button>
+          <button
+            onClick={handleLogout}
+            className="logout-button"
+          >
+            Cerrar sesión
           </button>
         </aside>
 
