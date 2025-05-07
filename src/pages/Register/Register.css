@@ -1,7 +1,4 @@
-/* Register.css - Mejorado
-   Estilizado siguiendo la estética de Login.css y Home.css */
 
-/* Variables globales para colores y efectos, consistentes con otros archivos */
 :root {
   --primary-light: #1b98e0; /* Azul claro */
   --primary-dark: #0B3D91;  /* Azul oscuro (de App.css) */

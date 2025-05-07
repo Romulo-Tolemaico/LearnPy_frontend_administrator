@@ -1,0 +1,59 @@
+.sidebar {
+    width: 220px;
+    height: 100vh;
+    background-color: #1F2937; /* gris oscuro */
+    color: white;
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+  
+  .sidebar-title {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid #374151;
+    padding-bottom: 0.5rem;
+  }
+  
+  .sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .sidebar-item {
+    text-decoration: none;
+    padding: 0.75rem;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    text-align: center;
+  }
+  
+  .sidebar-item.estudiante {
+    background-color: #3B82F6; /* azul */
+    color: white;
+  }
+  
+  .sidebar-item.estudiante:hover {
+    background-color: #2563EB;
+  }
+  
+  .sidebar-item.docente {
+    background-color: #10B981; /* verde */
+    color: white;
+  }
+  
+  .sidebar-item.docente:hover {
+    background-color: #059669;
+  }
+  
+  .sidebar-item.administrador {
+    background-color: #EF4444; /* rojo */
+    color: white;
+  }
+  
+  .sidebar-item.administrador:hover {
+    background-color: #DC2626;
+  }
+  

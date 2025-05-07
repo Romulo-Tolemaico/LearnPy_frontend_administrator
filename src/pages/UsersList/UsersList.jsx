@@ -4,6 +4,7 @@ import Header from '../../components/Header/Header';
 import './UsersList.css';
 
 function UsersList() {
+  
   const navigate = useNavigate();
   const [role, setRole] = useState('Estudiante');
 
@@ -16,15 +17,24 @@ function UsersList() {
   };
 
   const handleLogout = () => {
-    navigate('/logout'); // Ajusta esto según tu ruta real
+    navigate('/login');
   };
+
+  // Datos de ejemplo para la tabla
+  const mockUsers = [
+    { id: 1, nombre: "Ana García", email: "ana@example.com", activo: true },
+    { id: 2, nombre: "Carlos López", email: "carlos@example.com", activo: true },
+    { id: 3, nombre: "Laura Martínez", email: "laura@example.com", activo: false },
+    { id: 4, nombre: "Miguel Hernández", email: "miguel@example.com", activo: true },
+  ];
 
   return (
     <div className="page-container">
       <Header titulo="LearnPy Administrator - Lista de usuarios" />
 
       <div className="content-container">
-        <aside className="sidebar">
+        
+        <div className="sidebar">
           <button
             onClick={() => handleRoleChange("Estudiante")}
             className={role === "Estudiante" ? "selected-button" : "button"}
@@ -43,7 +53,7 @@ function UsersList() {
           >
             Cerrar sesión
           </button>
-        </aside>
+        </div>
 
         <main className="main-content">
           <div className="actions-container">
@@ -60,7 +70,31 @@ function UsersList() {
 
           <p className="role-message">Rol seleccionado: {role}</p>
 
-          {/* Aquí irá la lista de usuarios */}
+          {/* Tabla de usuarios */}
+          <table className="users-table">
+            <thead>
+              <tr>
+                <th>Seleccionar</th>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              {mockUsers.map(user => (
+                <tr key={user.id}>
+                  <td className="checkbox-container">
+                    <input type="checkbox" className="custom-checkbox" />
+                  </td>
+                  <td>{user.id}</td>
+                  <td>{user.nombre}</td>
+                  <td>{user.email}</td>
+                  <td>{user.activo ? "Activo" : "Inactivo"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </main>
       </div>
     </div>
